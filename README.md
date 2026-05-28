@@ -62,6 +62,8 @@
 
 ## Project Structure
 
+---
+
 mips_pipeline/
 ├── mips_pkg.vhd          # Shared package: types, constants, control record
 ├── register_file.vhd     # 32x32 dual-read single-write register file
