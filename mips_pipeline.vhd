@@ -1,4 +1,3 @@
--- =============================================================
 --  mips_pipeline.vhd
 --  Top-level 5-stage MIPS pipeline
 --
@@ -11,7 +10,6 @@
 --    - Data forwarding: EX?EX and MEM?EX (forwarding_unit)
 --    - Control (branch/jump): assume branch-not-taken;
 --      flush when taken (2-cycle penalty for branch, 0 for JAL/J)
--- =============================================================
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -26,9 +24,7 @@ end entity mips_pipeline;
 
 architecture rtl of mips_pipeline is
 
-    -- =========================================================
     -- Component declarations
-    -- =========================================================
     component instruction_memory is
         generic (MEM_SIZE : integer := 512);
         port (addr  : in  std_logic_vector(31 downto 0);
@@ -91,23 +87,17 @@ architecture rtl of mips_pipeline is
               forwardB         : out std_logic_vector(1 downto 0));
     end component;
 
-    -- =========================================================
     -- IF stage signals
-    -- =========================================================
     signal pc          : std_logic_vector(31 downto 0) := (others => '0');
     signal pc_plus4    : std_logic_vector(31 downto 0);
     signal instr_fetch : std_logic_vector(31 downto 0);
     signal pc_next     : std_logic_vector(31 downto 0);
 
-    -- =========================================================
     -- IF/ID pipeline register
-    -- =========================================================
     signal ifid_pc4   : std_logic_vector(31 downto 0) := (others => '0');
     signal ifid_instr : std_logic_vector(31 downto 0) := (others => '0');
 
-    -- =========================================================
     -- ID stage signals
-    -- =========================================================
     signal id_opcode   : std_logic_vector(5  downto 0);
     signal id_rs       : std_logic_vector(4  downto 0);
     signal id_rt       : std_logic_vector(4  downto 0);
@@ -123,9 +113,7 @@ architecture rtl of mips_pipeline is
     signal id_ctrl     : ctrl_t;
     signal id_branch_tgt : std_logic_vector(31 downto 0);
 
-    -- =========================================================
     -- ID/EX pipeline register
-    -- =========================================================
     signal idex_ctrl    : ctrl_t                          := CTRL_NOP;
     signal idex_pc4     : std_logic_vector(31 downto 0)  := (others => '0');
     signal idex_rs_data : std_logic_vector(31 downto 0)  := (others => '0');
@@ -136,9 +124,7 @@ architecture rtl of mips_pipeline is
     signal idex_rd      : std_logic_vector(4  downto 0)  := (others => '0');
     signal idex_shamt   : std_logic_vector(4  downto 0)  := (others => '0');
 
-    -- =========================================================
     -- EX stage signals
-    -- =========================================================
     signal ex_alu_a    : std_logic_vector(31 downto 0);
     signal ex_alu_b_rt : std_logic_vector(31 downto 0);  -- after forward MUX
     signal ex_alu_b    : std_logic_vector(31 downto 0);  -- after src MUX (imm or rt)
@@ -149,9 +135,7 @@ architecture rtl of mips_pipeline is
     signal forwardA    : std_logic_vector(1  downto 0);
     signal forwardB    : std_logic_vector(1  downto 0);
 
-    -- =========================================================
     -- EX/MEM pipeline register
-    -- =========================================================
     signal exmem_ctrl    : ctrl_t                         := CTRL_NOP;
     signal exmem_alu_res : std_logic_vector(31 downto 0) := (others => '0');
     signal exmem_rt_data : std_logic_vector(31 downto 0) := (others => '0');
@@ -163,30 +147,22 @@ architecture rtl of mips_pipeline is
     signal idex_branch_tgt : std_logic_vector(31 downto 0) := (others => '0');
     signal exmem_brnch_tgt : std_logic_vector(31 downto 0) := (others => '0');
 
-    -- =========================================================
     -- MEM stage signals
-    -- =========================================================
     signal mem_rd_data   : std_logic_vector(31 downto 0);
     signal branch_taken  : std_logic;
 
-    -- =========================================================
     -- MEM/WB pipeline register
-    -- =========================================================
     signal memwb_ctrl    : ctrl_t                         := CTRL_NOP;
     signal memwb_mem_data: std_logic_vector(31 downto 0) := (others => '0');
     signal memwb_alu_res : std_logic_vector(31 downto 0) := (others => '0');
     signal memwb_rd      : std_logic_vector(4  downto 0) := (others => '0');
     signal memwb_pc4     : std_logic_vector(31 downto 0) := (others => '0');
 
-    -- =========================================================
     -- WB stage signals
-    -- =========================================================
     signal wb_data      : std_logic_vector(31 downto 0);
     signal wb_rd        : std_logic_vector(4  downto 0);
 
-    -- =========================================================
     -- Hazard / stall signals
-    -- =========================================================
     signal stall         : std_logic;
     signal flush_id      : std_logic;   -- flush IF/ID on branch
     signal flush_ex      : std_logic;   -- flush ID/EX on stall/branch
@@ -196,9 +172,7 @@ architecture rtl of mips_pipeline is
 
 begin
 
-    -- =========================================================
     -- IF Stage
-    -- =========================================================
     pc_plus4 <= std_logic_vector(unsigned(pc) + 4);
 
     -- Jump target: {PC+4[31:28], instr[25:0], 2'b00}
@@ -247,9 +221,7 @@ begin
     flush_id <= '1' when (id_ctrl.jump = '1') or (idex_ctrl.jr = '1') else '0';
     flush_ex <= '1' when (stall = '1') or (branch_taken = '1') else '0';
 
-    -- =========================================================
     -- IF/ID Pipeline Register
-    -- =========================================================
     process(clk)
     begin
         if rising_edge(clk) then
@@ -263,9 +235,7 @@ begin
         end if;
     end process;
 
-    -- =========================================================
     -- ID Stage
-    -- =========================================================
     id_opcode  <= ifid_instr(31 downto 26);
     id_rs      <= ifid_instr(25 downto 21);
     id_rt      <= ifid_instr(20 downto 16);
@@ -308,9 +278,7 @@ begin
                   if_id_rt       => id_rt,
                   stall          => stall);
 
-    -- =========================================================
     -- ID/EX Pipeline Register
-    -- =========================================================
     process(clk)
     begin
         if rising_edge(clk) then
@@ -347,9 +315,7 @@ begin
         end if;
     end process;
 
-    -- =========================================================
     -- EX Stage
-    -- =========================================================
 
     -- Forwarding unit
     U_FWD : forwarding_unit
@@ -394,9 +360,7 @@ begin
                  idex_rd    when idex_ctrl.reg_dst  = '1' else
                  idex_rt;
 
-    -- =========================================================
     -- EX/MEM Pipeline Register
-    -- =========================================================
     process(clk)
     begin
         if rising_edge(clk) then
@@ -420,9 +384,7 @@ begin
         end if;
     end process;
 
-    -- =========================================================
     -- MEM Stage
-    -- =========================================================
     U_DMEM : data_memory
         generic map (MEM_SIZE => 256)
         port map (clk     => clk,
@@ -432,9 +394,7 @@ begin
                   rd_en   => exmem_ctrl.mem_read,
                   rd_data => mem_rd_data);
 
-    -- =========================================================
     -- MEM/WB Pipeline Register
-    -- =========================================================
     process(clk)
     begin
         if rising_edge(clk) then
@@ -454,9 +414,7 @@ begin
         end if;
     end process;
 
-    -- =========================================================
     -- WB Stage
-    -- =========================================================
     -- Write-back data MUX: memory, ALU result, or PC+4 (JAL)
     wb_data <= memwb_pc4      when memwb_ctrl.jal       = '1' else
                memwb_mem_data when memwb_ctrl.mem_to_reg = '1' else
