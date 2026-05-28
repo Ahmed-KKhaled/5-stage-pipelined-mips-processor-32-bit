@@ -1,9 +1,7 @@
--- =============================================================
 --  alu.vhd
 --  32-bit ALU for MIPS pipeline
 --  Operations: ADD, SUB, AND, OR, XOR, NOR, SLT, SLTU,
 --              SLL, SRL, SRA, LUI
--- =============================================================
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
