@@ -66,15 +66,16 @@
 5-stage-pipelined-mips-processor-32-bit/
 │
 ├── mips_pipeline/
-│   └── mips_pkg.vhd
-│   └── register_file.vhd   
-│   └── alu.vhd   
-│   └── control_unit.vhd   
-│   └── hazard_forward.vhd     
-│   └── memories (1).vhd     
-│   └── mips_pipeline.vhd     
-│   └── mips_pipeline_tb (1).vhd     
-
+│   └── mips_pkg.vhd # Shared package: types, constants, control record
+│   └── register_file.vhd   # 32x32 dual-read single-write register file
+│   └── alu.vhd    # 32-bit ALU (ADD, SUB, AND, OR, SLT, SLL, ...)
+│   └── control_unit.vhd # Opcode decoder -> control signals
+│   └── hazard_forward.vhd  # Hazard detection unit + forwarding unit
+│   └── memories (1).vhd     # Instruction memory (ROM) + data memory (RAM)
+│   └── mips_pipeline.vhd      # Top-level: all 5 stages wired together
+│   └── mips_pipeline_tb (1).vhd     # Testbench: runs test program, 800ns simulation
+├── presentation/
+|    └── pipelined_mips_processor_presentation.pptx
 └── README.md                              # Project documentation
 ```
 
