@@ -1,9 +1,7 @@
--- =============================================================
 --  hazard_unit.vhd
 --  Load-use hazard detection: inserts a bubble (stall) when a
 --  load instruction is immediately followed by an instruction
 --  that reads the loaded register.
--- =============================================================
 library ieee;
 use ieee.std_logic_1164.all;
 use work.mips_pkg.all;
@@ -33,7 +31,7 @@ begin
 end architecture rtl;
 
 
--- =============================================================
+
 --  forwarding_unit.vhd
 --  Detects EX and MEM forwarding opportunities and drives
 --  the 2-bit MUX selects on the ALU inputs.
@@ -42,7 +40,6 @@ end architecture rtl;
 --    "00" = register file (no forward)
 --    "01" = forward from MEM/WB  (1 cycle ago)
 --    "10" = forward from EX/MEM  (this cycle)
--- =============================================================
 library ieee;
 use ieee.std_logic_1164.all;
 use work.mips_pkg.all;
