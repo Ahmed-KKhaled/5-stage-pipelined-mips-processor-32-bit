@@ -60,7 +60,7 @@
 
 ---
 
-## Project Structure<img width="1042" height="667" alt="WhatsApp Image 2026-05-28 at 14 54 39" src="https://github.com/user-attachments/assets/12b72b04-e694-4c7c-9829-6cb4596af071" />
+## Project Structure
 
 mips_pipeline/
 ├── mips_pkg.vhd          # Shared package: types, constants, control record
@@ -68,7 +68,7 @@ mips_pipeline/
 ├── alu.vhd               # 32-bit ALU (ADD, SUB, AND, OR, SLT, SLL, ...)
 ├── control_unit.vhd      # Opcode decoder -> control signals
 ├── hazard_forward.vhd    # Hazard detection unit + forwarding unit
-├── memories.vhd          # Instruction memory (ROM) + data memory (RAM)
+├── memories (1).vhd          # Instruction memory (ROM) + data memory (RAM)
 ├── mips_pipeline.vhd     # Top-level: all 5 stages wired together
 └── mips_pipeline_tb.vhd  # Testbench: runs test program, 800ns simulation
 
