@@ -1,9 +1,7 @@
--- =============================================================
 --  register_file.vhd
 --  32 x 32-bit dual-read, single-write register file
 --  Write is synchronous (rising edge); reads are combinational.
 --  Register $0 is hardwired to zero.
--- =============================================================
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
