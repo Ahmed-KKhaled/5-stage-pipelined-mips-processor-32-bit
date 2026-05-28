@@ -1,12 +1,9 @@
--- =============================================================
 --  memories.vhd  (instruction memory + data memory)
--- =============================================================
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.mips_pkg.all;
 
--- -------------------------------------------------------------------
 --  INSTRUCTION MEMORY
 --
 --  Test program (word index -> instruction):
@@ -109,9 +106,7 @@ begin
 end architecture rtl;
 
 
--- =============================================================
 --  DATA MEMORY
--- =============================================================
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
