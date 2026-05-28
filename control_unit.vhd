@@ -1,9 +1,7 @@
--- =============================================================
 --  control_unit.vhd
 --  Main control unit: decodes opcode ? generates ctrl_t signals
 --  ALU control is also embedded here (no separate sub-unit needed
 --  since we carry alu_op directly in ctrl_t).
--- =============================================================
 library ieee;
 use ieee.std_logic_1164.all;
 use work.mips_pkg.all;
